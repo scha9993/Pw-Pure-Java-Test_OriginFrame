@@ -9,11 +9,11 @@ public class HybrisTest {
         //PW: Welcome123
         Page page = Playwright.create().chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)).newContext().newPage();
         page.navigate("https://www-s3.brake.co.uk/");
-        Locator btnUser = page.locator("//button[@aria-label='login']");
-        page.click(String.valueOf(btnUser));
+        Locator btnUser = page.locator("div#v-login-popup button");
+        btnUser.click();
         //TODO navigate to update card
-        Locator btnUpdateCard = page.getByText("Update");
-        btnUpdateCard.click();
+//        Locator btnUpdateCard = page.locator("button[role='button']:has-text('Update')");
+//        btnUpdateCard.click();
         Locator iFramePayment = (Locator) page.frameLocator("#paymentIframe");
         Locator txtFldCardNo = iFramePayment.getByPlaceholder("0000 0000 0000 0000");
         Locator txtFldCardHolder = iFramePayment.getByPlaceholder("John Doe");
