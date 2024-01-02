@@ -1,13 +1,20 @@
 import com.microsoft.playwright.*;
 import org.testng.annotations.Test;
 
+import java.util.Collections;
+
 public class HybrisTest {
 
     @Test
-    private void PaymentPopUpTest(){
+    private void PaymentPopUpTest() throws InterruptedException {
         //UN: paypagetest7@qa.com
         //PW: Welcome123
-        Page page = Playwright.create().chromium().launch(new BrowserType.LaunchOptions().setHeadless(false)).newContext().newPage();
+        Playwright playwright = Playwright.create();
+        Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false).setArgs(Collections.singletonList("--disable-web-security")));
+        //Browser browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setExecutablePath(Paths.get("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe")).setHeadless(false).setArgs(Collections.singletonList("--disable-web-security")));
+        BrowserContext context = browser.newContext(new Browser.NewContextOptions().setIgnoreHTTPSErrors(true).setBypassCSP(true).setExtraHTTPHeaders(Collections.singletonMap("Content-Security-Policy", "frame-ancestors 'self' https://www-s3.brake.co.uk")));
+        context.setDefaultTimeout(500000);
+        Page page = context.newPage();
         page.navigate("https://www-s3.brake.co.uk/");
         Locator btnUser = page.locator("div#v-login-popup button");
         btnUser.click();
